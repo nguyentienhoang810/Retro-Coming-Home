@@ -26,8 +26,7 @@ public class PlayerManager : MonoBehaviour
             isJumping = false;
         }
         if (playerBody.velocity.y < 0) {
-            animator.SetBool("isJumping", false);
-            animator.SetBool("isFalling", true);
+            activeAnimation(PlayerState.isFalling);
             playerBody.velocity += Vector2.up * Physics2D.gravity.y * (fall - 1) * Time.deltaTime;
         }
     }
@@ -39,20 +38,56 @@ public class PlayerManager : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D info) {
         if (info.gameObject.name == "Tilemap") {
-            animator.SetBool("isRunning", true);
-            animator.SetBool("isFalling", false);
-            animator.SetBool("isJumping", false);
+            activeAnimation(PlayerState.isRunning);
         }
     }
 
     public void Jump() {
-        animator.SetBool("isJumping", true);
-        animator.SetBool("isFalling", false);
-        animator.SetBool("isRunning", false);
+        activeAnimation(PlayerState.isJumping);
         isJumping = true;
     }
 
     public void Attack() {
         Debug.Log("Attack");
+    }
+
+
+    //Controller player animation state
+
+    private enum PlayerState {
+        isFalling,
+        isJumping,
+        isRunning
+    }
+
+    private void activeAnimation(PlayerState state) {
+        switch (state) {
+            case PlayerState.isFalling:
+            animator.SetBool(getState(PlayerState.isFalling), true);
+            animator.SetBool(getState(PlayerState.isJumping), false);
+            animator.SetBool(getState(PlayerState.isRunning), false);
+            break;
+            case PlayerState.isJumping:
+            animator.SetBool(getState(PlayerState.isFalling), false);
+            animator.SetBool(getState(PlayerState.isJumping), true);
+            animator.SetBool(getState(PlayerState.isRunning), false);
+            break;
+            case PlayerState.isRunning:
+            animator.SetBool(getState(PlayerState.isFalling), false);
+            animator.SetBool(getState(PlayerState.isJumping), false);
+            animator.SetBool(getState(PlayerState.isRunning), true);
+            break;
+        }
+    }
+    private string getState(PlayerState state) {
+        switch (state) {
+            case PlayerState.isFalling:
+            return "isFalling";
+            case PlayerState.isJumping:
+            return "isJumping";
+            case PlayerState.isRunning:
+            return "isRunning";
+        }
+        return "";
     }
 }
