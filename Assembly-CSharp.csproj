@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\Script\BGScaler.cs" />
      <Compile Include="Assets\Script\Moving.cs" />
+     <Compile Include="Assets\Script\PlayerManager.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>/Users/nguyentienhoang/Unity/ComingHome/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
