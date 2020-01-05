@@ -17,16 +17,17 @@ public class PlayerManager : MonoBehaviour
     }
 
     void Start() {
-        animator.SetBool("ifFalling", true);
+        
     }
 
     private void FixedUpdate() {
         if (isJumping) {
-            animator.SetBool("isJumping", true);
             playerBody.velocity = Vector2.up * jumpVelocity;
             isJumping = false;
         }
         if (playerBody.velocity.y < 0) {
+            animator.SetBool("isJumping", false);
+            animator.SetBool("isFalling", true);
             playerBody.velocity += Vector2.up * Physics2D.gravity.y * (fall - 1) * Time.deltaTime;
         }
     }
@@ -39,10 +40,15 @@ public class PlayerManager : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D info) {
         if (info.gameObject.name == "Tilemap") {
             animator.SetBool("isRunning", true);
+            animator.SetBool("isFalling", false);
+            animator.SetBool("isJumping", false);
         }
     }
 
     public void Jump() {
+        animator.SetBool("isJumping", true);
+        animator.SetBool("isFalling", false);
+        animator.SetBool("isRunning", false);
         isJumping = true;
     }
 
