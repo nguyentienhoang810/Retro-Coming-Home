@@ -5,13 +5,13 @@ public class PlayerManager : MonoBehaviour
 
     private Animator animator;
     private Rigidbody2D playerBody;
-    private float jumpPower = 600;
     private bool isJumping = false;
 
     public float jumpVelocity;
     public float fall = 2.5f;
 
     private void Awake() {
+        Application.targetFrameRate = 60;
         playerBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
@@ -34,6 +34,12 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnTriggerEnter2D(Collider2D objectInfo) {
+        if(objectInfo.gameObject.tag == "gem") {
+            objectInfo.gameObject.GetComponent<ItemManager>().getItem();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D info) {

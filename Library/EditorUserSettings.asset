@@ -5,6 +5,9 @@ EditorUserSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 4
   m_ConfigSettings:
+    UnityRemoteDevice:
+      value: 56550c5350070f0c0f5e0821112106444f134d7f7e7c7435742d4f6ab7b2653ee3be35bbb16d3d3a
+      flags: 0
     vcSharedLogLevel:
       value: 0d5e400f0650
       flags: 0

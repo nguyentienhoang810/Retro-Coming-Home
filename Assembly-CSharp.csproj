@@ -46,6 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Script\BGScaler.cs" />
+     <Compile Include="Assets\Script\ItemManager.cs" />
      <Compile Include="Assets\Script\Moving.cs" />
      <Compile Include="Assets\Script\PlayerManager.cs" />
  <Reference Include="Unity.Timeline.Editor">
