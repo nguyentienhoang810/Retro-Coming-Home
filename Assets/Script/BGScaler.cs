@@ -12,7 +12,6 @@ public class BGScaler : MonoBehaviour
         bgRender = GetComponent<SpriteRenderer>();
         Vector3 initScale = new Vector3(1, 1, 0);
         Vector3 tempScale = transform.localScale;
-        transform.position = new Vector3(0, 0, 0);
         transform.localScale = initScale;
     }
 
@@ -25,5 +24,8 @@ public class BGScaler : MonoBehaviour
 
         Vector3 scrScale = new Vector3(1, worldHeight/bgHeight, 0);
         transform.localScale = scrScale;
+
+        Debug.Log("cam render " + worldWidth);
+        Debug.Log("bg after render" + bgRender.bounds.size);
     }
 }

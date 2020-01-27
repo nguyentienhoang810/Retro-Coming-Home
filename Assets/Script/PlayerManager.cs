@@ -7,7 +7,7 @@ public class PlayerManager : MonoBehaviour
     private Rigidbody2D playerBody;
     private bool isJumping = false;
     public float jumpVelocity;
-    public float fall = 2.5f;
+    private float fall = 2.5f;
 
     //check double jump
     private int jumpCount = 0;
