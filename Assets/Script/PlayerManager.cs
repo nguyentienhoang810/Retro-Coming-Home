@@ -6,9 +6,11 @@ public class PlayerManager : MonoBehaviour
     private Animator animator;
     private Rigidbody2D playerBody;
     private bool isJumping = false;
-
     public float jumpVelocity;
     public float fall = 2.5f;
+
+    //check double jump
+    private int jumpCount = 0;
 
     private void Awake() {
         Application.targetFrameRate = 60;
@@ -21,7 +23,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        if (isJumping) {
+        if (isJumping && jumpCount <= 2) {
             playerBody.velocity = Vector2.up * jumpVelocity;
             isJumping = false;
         }
@@ -45,12 +47,14 @@ public class PlayerManager : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D info) {
         if (info.gameObject.name == "Tilemap") {
             activeAnimation(PlayerState.isRunning);
+            jumpCount = 0;
         }
     }
 
     public void Jump() {
         activeAnimation(PlayerState.isJumping);
         isJumping = true;
+        jumpCount += 1;
     }
 
     public void Attack() {
