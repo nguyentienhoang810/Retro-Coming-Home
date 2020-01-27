@@ -2,7 +2,7 @@
 
 public class PlayerManager : MonoBehaviour
 {
-
+    [SerializeField] GameManager gameManager;
     private Animator animator;
     private Rigidbody2D playerBody;
     private bool isJumping = false;
@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     void Start() {
-        
+
     }
 
     private void FixedUpdate() {
@@ -39,9 +39,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D objectInfo) {
-        if(objectInfo.gameObject.tag == "gem") {
-            objectInfo.gameObject.GetComponent<ItemManager>().getItem();
-        }
+        gameManager.updateScore(objectInfo);
     }
 
     private void OnCollisionEnter2D(Collision2D info) {
@@ -61,9 +59,7 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("Attack");
     }
 
-
     //Controller player animation state
-
     private enum PlayerState {
         isFalling,
         isJumping,

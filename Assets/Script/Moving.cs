@@ -11,4 +11,8 @@ public class Moving : MonoBehaviour
         temp.x -= speed * Time.deltaTime;
         transform.position = temp;
     }
+
+    public void stopMoving() {
+        
+    }
 }

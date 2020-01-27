@@ -2,8 +2,8 @@
 
 public class ItemManager : MonoBehaviour
 {
-    public void getItem() {
+    public int gemScore = 10;
+    public void destroy() {
         Destroy(this.gameObject);
-        Debug.Log("Score += 10");
     }
 }
