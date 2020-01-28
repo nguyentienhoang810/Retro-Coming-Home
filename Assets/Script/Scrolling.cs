@@ -12,6 +12,8 @@ public class Scrolling : MonoBehaviour
     private SpriteRenderer bgRender;
     Camera cam;
 
+    private float startX = 23.5f;
+
     private void Awake() {
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         bg = GameObject.FindGameObjectWithTag("background");
@@ -34,12 +36,14 @@ public class Scrolling : MonoBehaviour
     private void genBackground() {
         float xTemp = bg.transform.position.x;
         if (xTemp < -((bgWidth / 2 + scrWidth / 2) + (bgWidth / 2 - scrWidth / 2))) {
-            bg.transform.position = new Vector3(initPos.x - 1, initPos.y, initPos.z);
+            // bg.transform.position = new Vector3(initPos.x, initPos.y, initPos.z);
+            bg.transform.position = new Vector3(startX, initPos.y, initPos.z);
         }
 
         float x2Temp = bg2.transform.position.x;
         if (x2Temp < -((bgWidth / 2 + scrWidth / 2) + (bgWidth / 2 - scrWidth / 2))) {
-            bg2.transform.position = new Vector3(initPos.x - 1, initPos.y, initPos.z);
+            // bg2.transform.position = new Vector3(initPos.x, initPos.y, initPos.z);
+            bg2.transform.position = new Vector3(startX, initPos.y, initPos.z);
         }
     }
 
