@@ -10,6 +10,8 @@ public class PlayerManager : MonoBehaviour
     public float jumpVelocity;
     private float fall = 2.5f;
 
+    private int jumpCount = 0;
+
     private void Awake() {
         Application.targetFrameRate = 60;
         playerBody = GetComponent<Rigidbody2D>();
@@ -21,10 +23,6 @@ public class PlayerManager : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        // if (isOnGround && jumpCount <= 2) {
-        //     playerBody.velocity = Vector2.up * jumpVelocity;
-        //     isOnGround = false;
-        // }
         if (playerBody.velocity.y < 0) {
             falling();
         }
@@ -42,12 +40,16 @@ public class PlayerManager : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D info) {
         if (info.gameObject.name == "Tilemap") {
             activeAnimation(PlayerState.isRunning);
+            jumpCount = 0;
         }
     }
 
     //onClick
     public void Jump() {
-        jumping();
+        if (jumpCount < 2) {
+            jumping();
+            jumpCount += 1;
+        }
     }
 
     //fall animation and physic
