@@ -7,6 +7,8 @@ TagManager:
   - gem
   - background
   - background2
+  - trap
+  - reset
   layers:
   - Default
   - TransparentFX
