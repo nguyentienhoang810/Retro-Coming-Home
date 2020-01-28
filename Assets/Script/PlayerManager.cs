@@ -5,12 +5,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] GameManager gameManager;
     private Animator animator;
     private Rigidbody2D playerBody;
-    private bool isJumping = false;
+    
+    // get reference from IDE
     public float jumpVelocity;
     private float fall = 2.5f;
-
-    //check double jump
-    private int jumpCount = 0;
 
     private void Awake() {
         Application.targetFrameRate = 60;
@@ -23,13 +21,12 @@ public class PlayerManager : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        if (isJumping && jumpCount <= 2) {
-            playerBody.velocity = Vector2.up * jumpVelocity;
-            isJumping = false;
-        }
+        // if (isOnGround && jumpCount <= 2) {
+        //     playerBody.velocity = Vector2.up * jumpVelocity;
+        //     isOnGround = false;
+        // }
         if (playerBody.velocity.y < 0) {
-            activeAnimation(PlayerState.isFalling);
-            playerBody.velocity += Vector2.up * Physics2D.gravity.y * (fall - 1) * Time.deltaTime;
+            falling();
         }
     }
 
@@ -45,14 +42,23 @@ public class PlayerManager : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D info) {
         if (info.gameObject.name == "Tilemap") {
             activeAnimation(PlayerState.isRunning);
-            jumpCount = 0;
         }
     }
 
+    //onClick
     public void Jump() {
+        jumping();
+    }
+
+    //fall animation and physic
+    private void falling() {
+        activeAnimation(PlayerState.isFalling);
+        playerBody.velocity += Vector2.up * Physics2D.gravity.y * (fall - 1) * Time.deltaTime;
+    }
+    //jump animation and physic
+    private void jumping() {
         activeAnimation(PlayerState.isJumping);
-        isJumping = true;
-        jumpCount += 1;
+        playerBody.velocity = Vector2.up * jumpVelocity;
     }
 
     public void Attack() {
