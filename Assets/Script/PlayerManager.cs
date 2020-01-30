@@ -42,14 +42,16 @@ public class PlayerManager : MonoBehaviour
 
         if (objectInfo.gameObject.tag == "reset") {
             activeAnimation(PlayerState.isRunning);
-            Debug.Log("reset state");
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D info) {
-        if (info.gameObject.name == "Tilemap") {
+    private void OnCollisionEnter2D(Collision2D objectInfo) {
+        if (objectInfo.gameObject.name == "Tilemap") {
             activeAnimation(PlayerState.isRunning);
             jumpCount = 0;
+        }
+        if (objectInfo.gameObject.tag == "enemy") {
+            activeAnimation(PlayerState.isHurt);
         }
     }
 
