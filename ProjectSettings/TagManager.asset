@@ -9,6 +9,7 @@ TagManager:
   - background2
   - trap
   - reset
+  - enemy
   layers:
   - Default
   - TransparentFX
