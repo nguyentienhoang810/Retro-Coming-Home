@@ -49,6 +49,7 @@ public class PlayerManager : MonoBehaviour
         if (objectInfo.gameObject.name == "Tilemap") {
             activeAnimation(PlayerState.isRunning);
             jumpCount = 0;
+            Scrolling.start = true;
         }
         if (objectInfo.gameObject.tag == "enemy") {
             activeAnimation(PlayerState.isHurt);
