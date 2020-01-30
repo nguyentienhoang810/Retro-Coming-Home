@@ -9,7 +9,6 @@ public class PlayerManager : MonoBehaviour
     // get reference from IDE
     public float jumpVelocity;
     private float fall = 2.5f;
-
     //max = 2 (double jump)
     private int jumpCount = 0;
 
