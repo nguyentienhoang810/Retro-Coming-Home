@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-
+using System.Collections;
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] GameManager gameManager;
+    private Renderer render;
     private Animator animator;
     private Rigidbody2D playerBody;
     
@@ -11,11 +12,21 @@ public class PlayerManager : MonoBehaviour
     private float fall = 2.5f; //fall speed
     //max = 2 (double jump)
     private int jumpCount = 0;
+    private float blinkTime = 0.1f;
+
+    private enum PlayerState {
+        isFalling,
+        isJumping,
+        isRunning,
+        isHurt
+    }
+    private PlayerState playerState;
 
     private void Awake() {
         Application.targetFrameRate = 60;
         playerBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        render = GetComponent<Renderer>();
     }
 
     void Start() {
@@ -26,6 +37,7 @@ public class PlayerManager : MonoBehaviour
         if (playerBody.velocity.y < 0) {
             falling();
         }
+        blink();
     }
 
     void Update()
@@ -89,26 +101,46 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("Attack");
     }
 
+    private IEnumerator blink() {
+        render.enabled = false;
+        yield return new WaitForSeconds(blinkTime);
+        render.enabled = true;
+        yield return new WaitForSeconds(blinkTime);
+        render.enabled = false;
+        yield return new WaitForSeconds(blinkTime);
+        render.enabled = true;
+        yield return new WaitForSeconds(blinkTime);
+        render.enabled = false;
+        yield return new WaitForSeconds(blinkTime);
+        render.enabled = true;
+    }
+
     private void activeAnimation(PlayerState state) {
         switch (state) {
             case PlayerState.isFalling:
+            playerState = PlayerState.isFalling;
             animator.SetBool(getState(PlayerState.isJumping), false);
             animator.SetBool(getState(PlayerState.isRunning), false);
             animator.SetBool(getState(PlayerState.isFalling), true);
             break;
             case PlayerState.isJumping:
+            playerState = PlayerState.isJumping;
             animator.SetBool(getState(PlayerState.isHurt), false);
             animator.SetBool(getState(PlayerState.isFalling), false);
             animator.SetBool(getState(PlayerState.isRunning), false);
             animator.SetBool(getState(PlayerState.isJumping), true);
             break;
             case PlayerState.isRunning:
+            playerState = PlayerState.isRunning;
             animator.SetBool(getState(PlayerState.isHurt), false);
             animator.SetBool(getState(PlayerState.isFalling), false);
             animator.SetBool(getState(PlayerState.isJumping), false);
             animator.SetBool(getState(PlayerState.isRunning), true);
             break;
             case PlayerState.isHurt:
+            playerState = PlayerState.isHurt;
+            // InvokeRepeating("blink", 0.3f, 1f);
+            StartCoroutine(blink());
             // animator.SetBool(getState(PlayerState.isJumping), false);
             // animator.SetBool(getState(PlayerState.isFalling), false);
             animator.SetBool(getState(PlayerState.isRunning), false);
@@ -118,12 +150,6 @@ public class PlayerManager : MonoBehaviour
     }
 
     //Controller player animation state
-    private enum PlayerState {
-        isFalling,
-        isJumping,
-        isRunning,
-        isHurt
-    }
     private string getState(PlayerState state) {
         switch (state) {
             case PlayerState.isFalling:
