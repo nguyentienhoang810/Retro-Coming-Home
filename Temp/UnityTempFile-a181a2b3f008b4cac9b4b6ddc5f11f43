@@ -305,7 +305,7 @@
 /define:CSHARP_7_OR_LATER
 /define:CSHARP_7_3_OR_NEWER
 "Assets/Script/BGScaler.cs"
-"Assets/Script/EnemyMove.cs"
+"Assets/Script/EnemyMng.cs"
 "Assets/Script/GameManager.cs"
 "Assets/Script/ItemManager.cs"
 "Assets/Script/PlayerManager.cs"

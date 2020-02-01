@@ -50,8 +50,18 @@ public class PlayerManager : MonoBehaviour
             jumpCount = 0;
             Scrolling.start = true;
         }
-        if (objectInfo.gameObject.tag == "enemy") {
-            activeAnimation(PlayerState.isHurt);
+
+        foreach ( ContactPoint2D hitPos in objectInfo.contacts) {
+            if (objectInfo.gameObject.tag == "enemy") {
+                EnemyMng enemy = objectInfo.gameObject.GetComponent<EnemyMng>();   
+                Debug.Log(hitPos.normal);
+                if (hitPos.normal.y > 0) {
+                    enemy.Destroy();
+                    Jump();
+                } else {
+                    activeAnimation(PlayerState.isHurt);
+                }
+            }
         }
     }
 

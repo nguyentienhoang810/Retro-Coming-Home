@@ -46,7 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Script\BGScaler.cs" />
-     <Compile Include="Assets\Script\EnemyMove.cs" />
+     <Compile Include="Assets\Script\EnemyMng.cs" />
      <Compile Include="Assets\Script\GameManager.cs" />
      <Compile Include="Assets\Script\ItemManager.cs" />
      <Compile Include="Assets\Script\PlayerManager.cs" />

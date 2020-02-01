@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1905657127192059628}
   - component: {fileID: 3338836428979984207}
   - component: {fileID: 1385410778760145963}
-  - component: {fileID: 8086853610199790925}
+  - component: {fileID: 8664306868346780618}
   m_Layer: 0
   m_Name: opossum
   m_TagString: enemy
@@ -134,7 +134,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.32, y: -0.25}
@@ -150,7 +150,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.27, y: 1.11}
   m_EdgeRadius: 0
---- !u!114 &8086853610199790925
+--- !u!114 &8664306868346780618
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4033730450387184688}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e843919994baf412f857f8158198bcc3, type: 3}
+  m_Script: {fileID: 11500000, guid: 943fcfc271a6c477ab695c0c08390167, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftDistance: 20

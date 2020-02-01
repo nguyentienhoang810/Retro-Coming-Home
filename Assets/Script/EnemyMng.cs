@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
-public class EnemyMove : MonoBehaviour
+public class EnemyMng : MonoBehaviour
 {
+
     private Vector3 tempPos;
     public float leftDistance = 20;
     public int speed = 2;
@@ -44,6 +45,10 @@ public class EnemyMove : MonoBehaviour
             isMoveLeft = false;
             rightDistance = 20;
         }
+    }
+
+    public void Destroy() {
+        Destroy(this.gameObject);
     }
 
     private void moveRight() {
