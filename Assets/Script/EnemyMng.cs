@@ -9,6 +9,8 @@ public class EnemyMng : MonoBehaviour
     private float rightDistance;
     private bool isMoveLeft = true;
 
+    [SerializeField] GameObject death;
+
     private enum DIRECTION_TYPE {
         LEFT,
         RIGHT
@@ -48,6 +50,7 @@ public class EnemyMng : MonoBehaviour
     }
 
     public void Destroy() {
+        Instantiate(death, transform.position, transform.rotation);
         Destroy(this.gameObject);
     }
 

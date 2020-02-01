@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour
     
     // get reference from IDE
     public float jumpVelocity;
-    private float fall = 2.5f;
+    private float fall = 2.5f; //fall speed
     //max = 2 (double jump)
     private int jumpCount = 0;
 
@@ -57,6 +57,7 @@ public class PlayerManager : MonoBehaviour
                 Debug.Log(hitPos.normal);
                 if (hitPos.normal.y > 0) {
                     enemy.Destroy();
+                    Debug.Log(enemy.transform.position);
                     Jump();
                 } else {
                     activeAnimation(PlayerState.isHurt);
