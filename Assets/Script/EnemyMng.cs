@@ -50,6 +50,7 @@ public class EnemyMng : MonoBehaviour
     }
 
     public void Destroy() {
+        //add EnemyDeath effect animation to current enemy transform.location
         Instantiate(death, transform.position, transform.rotation);
         Destroy(this.gameObject);
     }

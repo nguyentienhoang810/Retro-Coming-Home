@@ -66,11 +66,11 @@ public class PlayerManager : MonoBehaviour
         foreach ( ContactPoint2D hitPos in objectInfo.contacts) {
             if (objectInfo.gameObject.tag == "enemy") {
                 EnemyMng enemy = objectInfo.gameObject.GetComponent<EnemyMng>();   
-                Debug.Log(hitPos.normal);
-                if (hitPos.normal.y > 0) {
+                if (hitPos.normal.y > 0) { //hit enemy from top
                     enemy.Destroy();
                     Debug.Log(enemy.transform.position);
                     Jump();
+                    jumpCount = 1; //make player able to jump again
                 } else {
                     activeAnimation(PlayerState.isHurt);
                 }
