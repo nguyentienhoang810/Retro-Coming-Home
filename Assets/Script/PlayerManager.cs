@@ -46,6 +46,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D objectInfo) { 
         if (objectInfo.gameObject.tag == "gem") {
+            gameManager.playGemSE();
             ItemManager gemObj = objectInfo.gameObject.GetComponent<ItemManager>();
             int score = gemObj.gemScore;
             gameManager.updateScore(score);
@@ -72,11 +73,13 @@ public class PlayerManager : MonoBehaviour
             if (objectInfo.gameObject.tag == "enemy") {
                 EnemyMng opossum = objectInfo.gameObject.GetComponent<EnemyMng>();
                 if (hitPos.normal.y > 0) { //hit enemy from top
+                    gameManager.playDestroyEnemySE();
                     opossum.Destroy();
                     // Debug.Log(enemy.transform.position);
                     Jump();
                     jumpCount = 1; //make player able to jump again
                 } else {
+                    gameManager.playHurtSE();
                     activeAnimation(PlayerState.isHurt);
                 }
             }
@@ -98,7 +101,6 @@ public class PlayerManager : MonoBehaviour
     }
     //jump animation and physic
     private void jumping() {
-        gameManager.activeJumpSE();
         activeAnimation(PlayerState.isJumping);
         playerBody.velocity = Vector2.up * jumpVelocity;
     }
@@ -130,6 +132,7 @@ public class PlayerManager : MonoBehaviour
             animator.SetBool(getState(PlayerState.isFalling), true);
             break;
             case PlayerState.isJumping:
+            gameManager.playJumpSE();
             playerState = PlayerState.isJumping;
             animator.SetBool(getState(PlayerState.isHurt), false);
             animator.SetBool(getState(PlayerState.isFalling), false);
@@ -144,6 +147,7 @@ public class PlayerManager : MonoBehaviour
             animator.SetBool(getState(PlayerState.isRunning), true);
             break;
             case PlayerState.isHurt:
+            gameManager.playHurtSE();
             playerState = PlayerState.isHurt;
             // InvokeRepeating("blink", 0.3f, 1f);
             StartCoroutine(blink());
