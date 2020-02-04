@@ -30,14 +30,13 @@ public class PlayerManager : MonoBehaviour
     }
 
     void Start() {
-
+        StartCoroutine(blink());
     }
 
     private void FixedUpdate() {
         if (playerBody.velocity.y < 0) {
             falling();
         }
-        blink();
     }
 
     void Update()
@@ -45,8 +44,14 @@ public class PlayerManager : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter2D(Collider2D objectInfo) {
-        gameManager.updateScore(objectInfo);
+    private void OnTriggerEnter2D(Collider2D objectInfo) { 
+        if (objectInfo.gameObject.tag == "gem") {
+            ItemManager gemObj = objectInfo.gameObject.GetComponent<ItemManager>();
+            int score = gemObj.gemScore;
+            gameManager.updateScore(score);
+            gemObj.destroy();
+        }
+
         if (objectInfo.gameObject.tag == "trap") {
             activeAnimation(PlayerState.isHurt);
         }
@@ -65,10 +70,10 @@ public class PlayerManager : MonoBehaviour
 
         foreach ( ContactPoint2D hitPos in objectInfo.contacts) {
             if (objectInfo.gameObject.tag == "enemy") {
-                EnemyMng enemy = objectInfo.gameObject.GetComponent<EnemyMng>();   
+                EnemyMng opossum = objectInfo.gameObject.GetComponent<EnemyMng>();
                 if (hitPos.normal.y > 0) { //hit enemy from top
-                    enemy.Destroy();
-                    Debug.Log(enemy.transform.position);
+                    opossum.Destroy();
+                    // Debug.Log(enemy.transform.position);
                     Jump();
                     jumpCount = 1; //make player able to jump again
                 } else {
@@ -93,6 +98,7 @@ public class PlayerManager : MonoBehaviour
     }
     //jump animation and physic
     private void jumping() {
+        gameManager.activeJumpSE();
         activeAnimation(PlayerState.isJumping);
         playerBody.velocity = Vector2.up * jumpVelocity;
     }

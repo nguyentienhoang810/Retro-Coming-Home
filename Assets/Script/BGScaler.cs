@@ -25,7 +25,7 @@ public class BGScaler : MonoBehaviour
         Vector3 scrScale = new Vector3(1, worldHeight/bgHeight, 0);
         transform.localScale = scrScale;
 
-        Debug.Log("cam render " + worldWidth);
-        Debug.Log("bg after render" + bgRender.bounds.size);
+        // Debug.Log("cam render " + worldWidth);
+        // Debug.Log("bg after render" + bgRender.bounds.size);
     }
 }

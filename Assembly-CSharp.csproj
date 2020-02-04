@@ -48,6 +48,7 @@
      <Compile Include="Assets\Script\BGScaler.cs" />
      <Compile Include="Assets\Script\CompleteAnimation.cs" />
      <Compile Include="Assets\Script\EnemyMng.cs" />
+     <Compile Include="Assets\Script\FrogMng.cs" />
      <Compile Include="Assets\Script\GameManager.cs" />
      <Compile Include="Assets\Script\ItemManager.cs" />
      <Compile Include="Assets\Script\PlayerManager.cs" />
