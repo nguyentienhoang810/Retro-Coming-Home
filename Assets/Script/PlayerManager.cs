@@ -64,6 +64,7 @@ public class PlayerManager : MonoBehaviour
         }
         if (objectInfo.gameObject.tag == "trap") {
             if (!isBlinking) {
+                downHP();
                 activeAnimation(PlayerState.isHurt);
             }
         }
@@ -90,6 +91,7 @@ public class PlayerManager : MonoBehaviour
                     jumpCount = 1; //make player able to jump again
                 } else {
                     if (!isBlinking) {
+                        downHP();
                         gameManager.playHurtSE();
                         activeAnimation(PlayerState.isHurt);
                     }
@@ -127,13 +129,13 @@ public class PlayerManager : MonoBehaviour
     private void downHP() {
         //down HP
         fullHeath -= 1;
+        Debug.Log(fullHeath);
         // hearts[fullHeath].sprite = emptyHeart;
         hearts[fullHeath].enabled = false;
         if (fullHeath <= 0) {
-            Debug.Log("GAME OVER");
+            activeAnimation(PlayerState.isHurt);
             Scrolling.gameover = true;
             Scrolling.start = false;
-            activeAnimation(PlayerState.isHurt);
         }
     }
 
@@ -144,6 +146,12 @@ public class PlayerManager : MonoBehaviour
         render.enabled = true;
         yield return new WaitForSeconds(blinkTime);
         render.enabled = false;
+        yield return new WaitForSeconds(blinkTime);
+        render.enabled = true;
+        yield return new WaitForSeconds(blinkTime);
+        render.enabled = false;
+        yield return new WaitForSeconds(blinkTime);
+        render.enabled = true;
         yield return new WaitForSeconds(blinkTime);
         render.enabled = true;
         yield return new WaitForSeconds(blinkTime);
@@ -178,8 +186,6 @@ public class PlayerManager : MonoBehaviour
             break;
             case PlayerState.isHurt:
             gameManager.playHurtSE();
-            downHP();
-            
             playerState = PlayerState.isHurt;
             // InvokeRepeating("blink", 0.3f, 1f);
             StartCoroutine(blink());

@@ -5,50 +5,72 @@ public class FrogMng : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody2D frogBody;
-    private delegate void Callback();
     private enum FrogState {
         isIdle,
         isJumping
     }
 
+    private bool onJumping = false;
+    private bool leftJump = true;
     private void Awake() {
         animator = GetComponent<Animator>();
         frogBody = GetComponent<Rigidbody2D>();
     }
 
     private void Start() {
-        // jump();
-        // StartCoroutine(startFrogJump(1));
-        var callback = new Callback(move);
-        jump(callback);
+        StartCoroutine(startFrogJump(2));
     }
 
     private void FixedUpdate() {
         Application.targetFrameRate = 60;
-        // StartCoroutine(startFrogJump(1));
+        Vector3 temp = transform.position;
+        if (onJumping) {
+            move(temp, 2.8f, leftJump);
+        } else {
+            move(temp, 0f, leftJump);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.name == "Tilemap") {
+            onJumping = false;
             activeAnimation(FrogState.isIdle);
         }
     }
 
     private IEnumerator startFrogJump(float time) {
+        //left
         yield return new WaitForSeconds(time);
-        ;
+        onJumping = true;
+        leftJump = true;
+        makeJump();
+        yield return new WaitForSeconds(time);
+        onJumping = true;
+        leftJump = true;
+        makeJump();
+        //right
+        yield return new WaitForSeconds(time);
+        onJumping = true;
+        leftJump = false;
+        makeJump();
+        yield return new WaitForSeconds(time);
+        onJumping = true;
+        leftJump = false;
+        makeJump();
     }
 
-    private void jump(Callback callback) {
+    private void makeJump() {
         activeAnimation(FrogState.isJumping);
         frogBody.velocity = Vector2.up * 12f;
-        callback();
     }
 
-    private void move() {
-        Vector3 frogTemp = transform.position;
-        frogTemp.x -= 2.8f * Time.deltaTime;
-        transform.position = frogTemp;
+    private void move(Vector3 temp, float amount, bool isLeft) {
+        if (isLeft) {
+            temp.x -= amount * Time.deltaTime;
+        } else {
+            temp.x += amount * Time.deltaTime;
+        }
+        transform.position = temp;
     }
 
     private void activeAnimation(FrogState state) {
