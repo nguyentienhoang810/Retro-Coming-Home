@@ -11,14 +11,10 @@ public class FrogMng : MonoBehaviour
     }
 
     private bool onJumping = false;
-    private bool leftJump = true;
+
     private void Awake() {
         animator = GetComponent<Animator>();
         frogBody = GetComponent<Rigidbody2D>();
-    }
-
-    private void Start() {
-        StartCoroutine(startFrogJump(2));
     }
 
     private void FixedUpdate() {
@@ -35,31 +31,29 @@ public class FrogMng : MonoBehaviour
         if (other.gameObject.name == "Tilemap") {
             onJumping = false;
             activeAnimation(FrogState.isIdle);
+            Invoke("makeJump", 1); //after 1s make jump looper
         }
     }
 
-    private IEnumerator startFrogJump(float time) {
-        //left
-        yield return new WaitForSeconds(time);
-        onJumping = true;
-        leftJump = true;
-        makeJump();
-        yield return new WaitForSeconds(time);
-        onJumping = true;
-        leftJump = true;
-        makeJump();
-        //right
-        yield return new WaitForSeconds(time);
-        onJumping = true;
-        leftJump = false;
-        makeJump();
-        yield return new WaitForSeconds(time);
-        onJumping = true;
-        leftJump = false;
-        makeJump();
-    }
-
+    private int leftJumpCount = 0; //max = 2
+    private int rightJumpCount = 0;
+    private bool leftJump = true;
     private void makeJump() {
+        onJumping = true;
+        if (leftJump == true) {
+            leftJumpCount += 1;
+            if( leftJumpCount > 2) {
+                leftJump = false;
+                rightJumpCount = 0;
+            }
+        } else {
+            rightJumpCount += 1;
+            if( rightJumpCount > 1) {
+                leftJump = true;
+                leftJumpCount = 1;
+            }
+        }
+
         activeAnimation(FrogState.isJumping);
         frogBody.velocity = Vector2.up * 12f;
     }
@@ -67,8 +61,10 @@ public class FrogMng : MonoBehaviour
     private void move(Vector3 temp, float amount, bool isLeft) {
         if (isLeft) {
             temp.x -= amount * Time.deltaTime;
+            transform.localScale = new Vector3(1,1,1);
         } else {
             temp.x += amount * Time.deltaTime;
+            transform.localScale = new Vector3(-1,1,1);
         }
         transform.position = temp;
     }
