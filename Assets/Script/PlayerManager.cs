@@ -94,21 +94,24 @@ public class PlayerManager : MonoBehaviour
 
     //onClick
     public void Jump() {
-        if (jumpCount < 2) {
-            jumping();
-            jumpCount += 1;
+        if (Scrolling.gameover == false) {
+            if (jumpCount < 2) {
+                jumping();
+                jumpCount += 1;
+            }
         }
+    }
+
+    //jump animation and physic
+    private void jumping() {
+        activeAnimation(PlayerState.isJumping);
+        playerBody.velocity = Vector2.up * jumpVelocity;
     }
 
     //fall animation and physic
     private void falling() {
         activeAnimation(PlayerState.isFalling);
         playerBody.velocity += Vector2.up * Physics2D.gravity.y * (fall - 1) * Time.deltaTime;
-    }
-    //jump animation and physic
-    private void jumping() {
-        activeAnimation(PlayerState.isJumping);
-        playerBody.velocity = Vector2.up * jumpVelocity;
     }
 
     public void Attack() {
@@ -118,9 +121,13 @@ public class PlayerManager : MonoBehaviour
     private void downHP() {
         //down HP
         fullHeath -= 1;
-        hearts[fullHeath].sprite = emptyHeart;
-        if (fullHeath == 0) {
+        // hearts[fullHeath].sprite = emptyHeart;
+        hearts[fullHeath].enabled = false;
+        if (fullHeath <= 0) {
             Debug.Log("GAME OVER");
+            Scrolling.gameover = true;
+            Scrolling.start = false;
+            activeAnimation(PlayerState.isHurt);
         }
     }
 
