@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] AudioClip destroyEnemySE;
     [SerializeField] AudioClip getHurtSE;
     [SerializeField] AudioClip pickGemSE;
+
     AudioSource audioSource;
     private int playerScore = 0;
 

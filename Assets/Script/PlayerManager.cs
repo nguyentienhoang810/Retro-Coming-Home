@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 public class PlayerManager : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class PlayerManager : MonoBehaviour
     //max = 2 (double jump)
     private int jumpCount = 0;
     private float blinkTime = 0.1f;
+
+    public Image[] hearts;
+    public Sprite heart;
+    public Sprite emptyHeart;
+    private int fullHeath = 3;
 
     private enum PlayerState {
         isFalling,
@@ -109,6 +115,15 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("Attack");
     }
 
+    private void downHP() {
+        //down HP
+        fullHeath -= 1;
+        hearts[fullHeath].sprite = emptyHeart;
+        if (fullHeath == 0) {
+            Debug.Log("GAME OVER");
+        }
+    }
+
     private IEnumerator blink() {
         render.enabled = false;
         yield return new WaitForSeconds(blinkTime);
@@ -148,6 +163,7 @@ public class PlayerManager : MonoBehaviour
             break;
             case PlayerState.isHurt:
             gameManager.playHurtSE();
+            downHP();
             playerState = PlayerState.isHurt;
             // InvokeRepeating("blink", 0.3f, 1f);
             StartCoroutine(blink());

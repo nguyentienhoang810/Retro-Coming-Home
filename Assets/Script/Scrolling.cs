@@ -8,11 +8,13 @@ public class Scrolling : MonoBehaviour
     private Camera cam;
     private PlayerManager player;
 
-    //get from Player when hit ground
+    //get from Player when hit ground. get from PlayerManager
     public static bool start = false;
 
      //distance X between player and main camera
     private float correctDistance = 3;
+
+    private bool gameover = false;
 
     private void Awake() {
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
@@ -30,5 +32,9 @@ public class Scrolling : MonoBehaviour
             camTemp.x = playerTemp.x + correctDistance;
             cam.transform.position = camTemp;
         }
+    }
+
+    private void moveObject() {
+
     }
 }
