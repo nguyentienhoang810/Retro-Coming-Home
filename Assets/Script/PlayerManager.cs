@@ -7,6 +7,7 @@ public class PlayerManager : MonoBehaviour
     private Renderer render;
     private Animator animator;
     private Rigidbody2D playerBody;
+    private BoxCollider2D playerCollider;
     
     // get reference from IDE
     public float jumpVelocity;
@@ -20,19 +21,22 @@ public class PlayerManager : MonoBehaviour
     public Sprite emptyHeart;
     private int fullHeath = 3;
 
+    private bool isBlinking;
+
     private enum PlayerState {
         isFalling,
         isJumping,
         isRunning,
         isHurt
     }
-    private PlayerState playerState;
+    private PlayerState playerState; //when blinking. player dont get hurt
 
     private void Awake() {
         Application.targetFrameRate = 60;
         playerBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         render = GetComponent<Renderer>();
+        playerCollider = GetComponent<BoxCollider2D>();
     }
 
     void Start() {
@@ -58,12 +62,13 @@ public class PlayerManager : MonoBehaviour
             gameManager.updateScore(score);
             gemObj.destroy();
         }
-
         if (objectInfo.gameObject.tag == "trap") {
-            activeAnimation(PlayerState.isHurt);
+            if (!isBlinking) {
+                activeAnimation(PlayerState.isHurt);
+            }
         }
 
-        if (objectInfo.gameObject.tag == "reset") {
+        if (objectInfo.gameObject.tag == "reset") { //after get out of trap
             activeAnimation(PlayerState.isRunning);
         }
     }
@@ -74,7 +79,6 @@ public class PlayerManager : MonoBehaviour
             jumpCount = 0;
             Scrolling.start = true;
         }
-
         foreach ( ContactPoint2D hitPos in objectInfo.contacts) {
             if (objectInfo.gameObject.tag == "enemy") {
                 EnemyMng opossum = objectInfo.gameObject.GetComponent<EnemyMng>();
@@ -85,8 +89,10 @@ public class PlayerManager : MonoBehaviour
                     Jump();
                     jumpCount = 1; //make player able to jump again
                 } else {
-                    gameManager.playHurtSE();
-                    activeAnimation(PlayerState.isHurt);
+                    if (!isBlinking) {
+                        gameManager.playHurtSE();
+                        activeAnimation(PlayerState.isHurt);
+                    }
                 }
             }
         }
@@ -132,6 +138,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     private IEnumerator blink() {
+        isBlinking = true;
         render.enabled = false;
         yield return new WaitForSeconds(blinkTime);
         render.enabled = true;
@@ -143,6 +150,7 @@ public class PlayerManager : MonoBehaviour
         render.enabled = false;
         yield return new WaitForSeconds(blinkTime);
         render.enabled = true;
+        isBlinking = false;
     }
 
     private void activeAnimation(PlayerState state) {
@@ -171,6 +179,7 @@ public class PlayerManager : MonoBehaviour
             case PlayerState.isHurt:
             gameManager.playHurtSE();
             downHP();
+            
             playerState = PlayerState.isHurt;
             // InvokeRepeating("blink", 0.3f, 1f);
             StartCoroutine(blink());
