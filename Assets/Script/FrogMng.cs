@@ -15,6 +15,8 @@ public class FrogMng : MonoBehaviour
     private void Awake() {
         animator = GetComponent<Animator>();
         frogBody = GetComponent<Rigidbody2D>();
+        leftJumpCount = jumpCount;
+        rightJumpCount = jumpCount;
     }
 
     private void FixedUpdate() {
@@ -35,22 +37,23 @@ public class FrogMng : MonoBehaviour
         }
     }
 
-    private int leftJumpCount = 0; //max = 2
-    private int rightJumpCount = 0;
+    public int jumpCount = 2;
+    private int leftJumpCount;
+    private int rightJumpCount;
     private bool leftJump = true;
     private void makeJump() {
         onJumping = true;
         if (leftJump == true) {
-            leftJumpCount += 1;
-            if( leftJumpCount > 2) {
+            leftJumpCount -= 1;
+            if(leftJumpCount < 0) {
                 leftJump = false;
-                rightJumpCount = 0;
+                rightJumpCount = jumpCount;
             }
         } else {
-            rightJumpCount += 1;
-            if( rightJumpCount > 1) {
+            rightJumpCount -= 1;
+            if( rightJumpCount < 1) {
                 leftJump = true;
-                leftJumpCount = 1;
+                leftJumpCount = jumpCount - 1;
             }
         }
 
