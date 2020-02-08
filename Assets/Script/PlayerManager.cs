@@ -80,23 +80,39 @@ public class PlayerManager : MonoBehaviour
             jumpCount = 0;
             Scrolling.start = true;
         }
-        foreach ( ContactPoint2D hitPos in objectInfo.contacts) {
-            if (objectInfo.gameObject.tag == "enemy") {
+
+        if (objectInfo.gameObject.tag == "enemy") {
+            foreach (ContactPoint2D hitPos in objectInfo.contacts) {
                 EnemyMng opossum = objectInfo.gameObject.GetComponent<EnemyMng>();
-                if (hitPos.normal.y > 0) { //hit enemy from top
-                    gameManager.playDestroyEnemySE();
+                if (isDestroyEnemy(hitPos)) {
                     opossum.Destroy();
-                    // Debug.Log(enemy.transform.position);
-                    Jump();
-                    jumpCount = 1; //make player able to jump again
-                } else {
-                    if (!isBlinking) {
-                        downHP();
-                        gameManager.playHurtSE();
-                        activeAnimation(PlayerState.isHurt);
-                    }
                 }
             }
+        }
+
+        if (objectInfo.gameObject.tag == "frog") {
+            foreach (ContactPoint2D hitPos in objectInfo.contacts) {
+                FrogMng frog = objectInfo.gameObject.GetComponent<FrogMng>();
+                if (isDestroyEnemy(hitPos)) {
+                    frog.Destroy();
+                }
+            }
+        }
+    }
+
+    private bool isDestroyEnemy(ContactPoint2D hitPos) {
+        if (hitPos.normal.y > 0) {
+            gameManager.playDestroyEnemySE();
+            Jump();
+            jumpCount = 1;
+            return true;
+        } else {
+            if (!isBlinking) {
+                downHP();
+                gameManager.playHurtSE();
+                activeAnimation(PlayerState.isHurt);
+            }
+            return false;
         }
     }
 

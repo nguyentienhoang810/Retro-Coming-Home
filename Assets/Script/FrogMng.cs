@@ -5,6 +5,8 @@ public class FrogMng : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody2D frogBody;
+
+    [SerializeField] GameObject death;
     private enum FrogState {
         isIdle,
         isJumping
@@ -35,6 +37,12 @@ public class FrogMng : MonoBehaviour
             activeAnimation(FrogState.isIdle);
             Invoke("makeJump", 1); //after 1s make jump looper
         }
+    }
+
+    public void Destroy() {
+        //add EnemyDeath effect animation to current enemy transform.location
+        Instantiate(death, transform.position, transform.rotation);
+        Destroy(this.gameObject);
     }
 
     public int jumpCount = 2;
