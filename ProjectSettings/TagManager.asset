@@ -10,6 +10,7 @@ TagManager:
   - trap
   - reset
   - enemy
+  - frog
   layers:
   - Default
   - TransparentFX
